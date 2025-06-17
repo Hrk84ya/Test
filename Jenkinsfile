@@ -38,13 +38,13 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerHubCred', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                sh "echo ${env.dockerHubPassword} | docker login -u ${env.dockerHubUser} --password-stdin"
-                }
-            }
-        }
+        // stage('Docker Push') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerHubCred', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+        //         sh "echo ${env.dockerHubPassword} | docker login -u ${env.dockerHubUser} --password-stdin"
+        //         }
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
