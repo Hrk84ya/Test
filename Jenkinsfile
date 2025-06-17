@@ -31,10 +31,21 @@ pipeline {
                 echo "Image build successful"
             }
         }
-        stage('Deploy'){
-            steps{
-                sh "docker run -d --rm -p 8000:8000 ${FULL_PATH}"
-            }
+        stage('Deploy') {
+    steps {
+        script {
+            sh '''
+            existing_container=$(docker ps --filter "publish=8000" --format "{{.ID}}")
+            if [ -n "$existing_container" ]; then
+                echo "Stopping container using port 8000: $existing_container"
+                docker stop $existing_container
+            fi
+            '''
+            
+            sh "docker run -d --rm -p 8000:8000 ${FULL_PATH}"
         }
+    }
+}
+
     }
 }
