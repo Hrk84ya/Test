@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     environment{
@@ -13,6 +14,7 @@ pipeline {
         stage('Test'){
             steps{
                 echo "Testing"
+                echo "$PATH"
             }
         }
         stage ('Docker version') {
