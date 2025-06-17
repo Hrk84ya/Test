@@ -14,12 +14,17 @@ pipeline {
         stage('Test'){
             steps{
                 echo "Testing"
-                echo "$PATH"
             }
         }
         stage ('Docker version') {
             steps {
                 sh 'docker --version'
+            }
+        }
+        stage('Build Image'){
+            steps{
+                sh "docker build -t hrk84ya/flask-cont:latest ."
+                echo "Image build successful"
             }
         }
         stage('Deploy'){
