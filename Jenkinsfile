@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh "docker run -d --rm -p 8000:8000 ${DOCKER_IMAGE}:latest"
+                sh "docker run -d --rm -p 8000:8000 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
             }
         }
     }
