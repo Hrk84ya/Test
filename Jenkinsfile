@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment{
+        PATH = "/usr/local/bin:$PATH"
+        DOCKER_PATH="/usr/local/bin/docker"
+    }
     stages{
         stage('Build'){
             steps{
@@ -9,17 +13,11 @@ pipeline {
         stage('Test'){
             steps{
                 echo "Testing"
-                echo "$PATH"
             }
         }
         stage ('Docker version') {
             steps {
                 sh 'docker --version'
-            }
-        }
-        stage('Docker Build') {
-            steps {
-                sh 'docker build -t hrk84ya/flask-cont:latest .'
             }
         }
         stage('Deploy'){
