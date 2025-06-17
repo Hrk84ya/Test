@@ -20,6 +20,7 @@ pipeline {
                 echo "Testing"
             }
         }
+        parallel{
         stage ('Docker version') {
             steps {
                 sh 'docker --version'
@@ -30,6 +31,7 @@ pipeline {
                 sh "docker build -t ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest ."
                 echo "Image build successful"
             }
+        }
         }
         stage('Deploy') {
     steps {
