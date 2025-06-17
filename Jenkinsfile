@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_USERNAME="hrk84ya"
-        DOCKER_IMAGE="flask-cont"
+        DOCKER_IMAGE="flask-img"
+        DOCKER_CONTAINER="flask-cont"
         TAG="latest"
         FULL_PATH="${DOCKER_USERNAME}/${DOCKER_IMAGE}:${TAG}"
         PATH = "/usr/local/bin:$PATH"
@@ -47,7 +48,7 @@ pipeline {
                         docker stop $existing_container
                     fi
                     '''
-                    sh "docker run -d --rm -p 8000:8000 ${FULL_PATH}"
+                    sh "docker run -d --rm --name ${DOCKER_CONTAINER} -p 8000:8000 ${FULL_PATH}"
                 }
             }
         }
