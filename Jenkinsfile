@@ -1,13 +1,13 @@
 pipeline {
     agent any
     environment {
-        DOCKER_USERNAME="hrk84ya"
-        DOCKER_IMAGE="flask-img"
-        DOCKER_CONTAINER="flask-cont"
-        TAG="latest"
-        FULL_PATH="${DOCKER_USERNAME}/${DOCKER_IMAGE}:${TAG}"
+        DOCKER_USERNAME = "hrk84ya"
+        DOCKER_IMAGE = "flask-img"
+        DOCKER_CONTAINER = "flask-cont"
+        TAG = "latest"
+        FULL_PATH = "${DOCKER_USERNAME}/${DOCKER_IMAGE}:${TAG}"
         PATH = "/usr/local/bin:$PATH"
-        DOCKER_PATH="/usr/local/bin/docker"
+        DOCKER_PATH = "/usr/local/bin/docker"
     }
     stages {
         stage('Build') {
@@ -34,6 +34,18 @@ pipeline {
                         sh "docker build -t ${FULL_PATH} ."
                         echo "Image build successful"
                     }
+                }
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+                    sh '''
+                    echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+                    docker push ${FULL_PATH}
+                    docker logout
+                    '''
                 }
             }
         }
