@@ -4,6 +4,8 @@ pipeline {
     environment{
         DOCKER_USERNAME="hrk84ya"
         DOCKER_IMAGE="flask-cont"
+        TAG="latest"
+        FULL_PATH="${DOCKER_USERNAME}/${DOCKER_IMAGE}:${TAG}"
         PATH = "/usr/local/bin:$PATH"
         DOCKER_PATH="/usr/local/bin/docker"
     }
@@ -31,7 +33,7 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                sh "docker run -d --rm -p 8000:8000 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
+                sh "docker run -d --rm -p 8000:8000 ${FULL_PATH}"
             }
         }
     }
