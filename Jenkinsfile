@@ -2,6 +2,8 @@
 pipeline {
     agent any
     environment{
+        DOCKER_USERNAME="hrk84ya"
+        DOCKER_IMAGE="flask-cont"
         PATH = "/usr/local/bin:$PATH"
         DOCKER_PATH="/usr/local/bin/docker"
     }
@@ -23,13 +25,13 @@ pipeline {
         }
         stage('Build Image'){
             steps{
-                sh "docker build -t hrk84ya/flask-cont:latest ."
+                sh "docker build -t ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest ."
                 echo "Image build successful"
             }
         }
         stage('Deploy'){
             steps{
-                echo "Deploying"
+                sh "docker run -d --rm -p 8000:8000 ${DOCKER_IMAGE}:latest"
             }
         }
     }
