@@ -1,23 +1,36 @@
 pipeline {
     agent any
 
+    environment {
+        APP_PORT = '8000'
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone repository') {
             steps {
-                echo 'Building...'
+                checkout scm
             }
         }
-        stage('Test') {
+
+        stage('Install dependencies') {
             steps {
-                echo 'Testing...'
+                sh '''
+                    pip install -r requirements.txt
+                '''
             }
         }
-        stage('Deploy') {
+        stage('Run App') {
             steps {
-                echo 'Deploying...'
-                sh 'docker build -t myapp:latest .'
-                sh 'docker run -d -p 8080:8080 myapp:latest'
+                sh '''
+                    nohup python app.py &
+                '''
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished.'
         }
     }
 }
